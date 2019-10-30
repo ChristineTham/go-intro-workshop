@@ -23,20 +23,20 @@ type User struct {
 	Skill     string  `json:"skill"`
 }
 
-func usersFrom(users Users, country string) {
-	fmt.Println("Users from", country)
-	for i := 0; i < len(users.Users); i++ {
-		if users.Users[i].Country == country {
-			fmt.Println("User id#", users.Users[i].Id, "Name:", users.Users[i].FirstName, users.Users[i].LastName, "Address:", users.Users[i].Address, users.Users[i].City, users.Users[i].Country, "Skill:", users.Users[i].Skill)
-		}
-	}
-	fmt.Println()
+type filterfunc func(User, string) bool
+
+func fromCountry(user User, country string) bool {
+	return user.Country == country
 }
 
-func usersHaveSkillContaining(users Users, skill string) {
-	fmt.Println("Users Having Skill Containing", skill)
+func skillContains(user User, skill string) bool {
+	return strings.Contains(strings.ToLower(user.Skill), strings.ToLower(skill))
+}
+
+func usersFilter(users Users, fn filterfunc, value string, header string) {
+	fmt.Println(header, value)
 	for i := 0; i < len(users.Users); i++ {
-		if strings.Contains(strings.ToLower(users.Users[i].Skill), strings.ToLower(skill)) {
+		if fn(users.Users[i], value) {
 			fmt.Println("User id#", users.Users[i].Id, "Name:", users.Users[i].FirstName, users.Users[i].LastName, "Address:", users.Users[i].Address, users.Users[i].City, users.Users[i].Country, "Skill:", users.Users[i].Skill)
 		}
 	}
@@ -69,9 +69,7 @@ func main() {
 	fmt.Println("Unmarshaled users", len(users.Users))
 	fmt.Println()
 
-	usersFrom(users, "Australia")
-	usersFrom(users, "China")
-	usersFrom(users, "United States")
-
-	usersHaveSkillContaining(users, "software")
+	usersFilter(users, fromCountry, "Australia", "Users from")
+	// usersFilter(users, fromCountry, "China", "Users from")
+	usersFilter(users, skillContains, "software", "Users with skill containing")
 }
