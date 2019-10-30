@@ -33,7 +33,7 @@ func skillContains(user User, skill string) bool {
 	return strings.Contains(strings.ToLower(user.Skill), strings.ToLower(skill))
 }
 
-func usersFilter(users Users, fn filterfunc, value string, header string) {
+func (users Users) filterList(fn filterfunc, value string, header string) {
 	fmt.Println(header, value)
 	for i := 0; i < len(users.Users); i++ {
 		if fn(users.Users[i], value) {
@@ -69,7 +69,7 @@ func main() {
 	fmt.Println("Unmarshaled users", len(users.Users))
 	fmt.Println()
 
-	usersFilter(users, fromCountry, "Australia", "Users from")
+	users.filterList(fromCountry, "Australia", "Users from")
 	// usersFilter(users, fromCountry, "China", "Users from")
-	usersFilter(users, skillContains, "software", "Users with skill containing")
+	users.filterList(skillContains, "software", "Users with skill containing")
 }

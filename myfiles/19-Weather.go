@@ -55,7 +55,8 @@ func (w Weather) NormalisedCurrentTemp() float64 {
 }
 
 func getWeatherResponseBody(count string) ([]byte, error) {
-	url := fmt.Sprintf("http://api.openweathermap.org/data/2.5/find?appid=0a12b8f2f0dd011ed6085cb995ff61b4&lat=-37.81&lon=144.96&cnt=%s", count)
+	// url := fmt.Sprintf("http://api.openweathermap.org/data/2.5/find?appid=0a12b8f2f0dd011ed6085cb995ff61b4&lat=-37.81&lon=144.96&cnt=%s", count)
+	url := fmt.Sprintf("http://api.openweathermap.org/data/2.5/find?appid=0a12b8f2f0dd011ed6085cb995ff61b4&lat=-33.8688&lon=151.2093&cnt=%s", count)
 
 	resp, err := http.Get(url)
 	if err != nil {
